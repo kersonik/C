@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define NAZEV_VSTUPNIHO_SOUBORU "casy.txt"
+#define NAZEV_VYSTUPNIHO_SOUBORU "platby.txt"
+#define HODINOVA_SAZBA 20
+#define HODINY_ZDARMA 2
+
+typedef struct {
+    int hodiny;
+    int minuty;
+    int sekundy;
+} HMS;
+
+typedef struct {
+    HMS vjezd;
+    HMS vyjezd;
+} ZaznamParkovani;
+
+void zkontrolovatOtevreniSouboru(FILE *soubor, const char *nazevSouboru) {
+    if (soubor == NULL) {
+       	printf("[CHYBA] - Soubor %s se nepodarilo otevrit.\n", nazevSouboru);
+        printf("[INFO] - Ukoncuji program.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void zkontrolovatZavreniSouboruAZavrit(FILE *soubor, const char *nazevSouboru) {
+    if (fclose(soubor) != 0) {
+        printf("[CHYBA] - Soubor %s se nepodarilo zavrit.\n", nazevSouboru);
+        printf("[INFO] - Ukoncuji program.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+int ziskatSekundyZCasu(HMS cas) {
+    return cas.hodiny * 3600 + cas.minuty * 60 + cas.sekundy;
+}
+
+HMS ziskatCasZSekund(int celkemSekund) {
+    HMS cas;
+    cas.hodiny = celkemSekund / 3600;
+    celkemSekund %= 3600;
+    cas.minuty = celkemSekund / 60;
+    cas.sekundy = celkemSekund % 60;
+    return cas;
+}
+
+int vypocitatPoplatek(int sekundyNavic) {
+    if (sekundyNavic <= 0) {
+        return 0;
+    }
+    int hodinyKZaplaceni = (sekundyNavic + 3599) / 3600;
+    return hodinyKZaplaceni * HODINOVA_SAZBA;
+}
+
+void vytisknoutHlavickuKonzole(FILE *soubor) {
+    fprintf(soubor, "P A R K O V I S T E\n");
+    fprintf(soubor, "--------------------------------------------------------\n");
+    fprintf(soubor, "%-6s  %-8s  %-8s  %-7s  %-8s\n", "poradi", "cas", "cas", "doba", "parkovani");
+    fprintf(soubor, "%-6s  %-8s  %-8s  %-7s  %-8s\n", "", "vjezdu", "vyjezdu", "sekundy", "cas");
+    fprintf(soubor, "--------------------------------------------------------\n");
+}
+
+void vytisknoutHlavickuSouboru(FILE *soubor) {
+    fprintf(soubor, "Parkoviste - P L A T B Y\n");
+    fprintf(soubor, "--------------------------------------------\n");
+    fprintf(soubor, "pocet parkovani zdarma         	     : %d h\n", HODINY_ZDARMA);
+    fprintf(soubor, "hodinova sazba po prekroceni limitu  : %d Kc\n", HODINOVA_SAZBA);
+    fprintf(soubor, "-----------------------------------------------------------------------\n");
+    fprintf(soubor, "poradi  cas vjezdu  cas vyjezdu  doba parkovani      nad limit    platba\n");
+    fprintf(soubor, "-----------------------------------------------------------------------\n");
+}
+
+int main(void) {
+    FILE *ctenySoubor = fopen(NAZEV_VSTUPNIHO_SOUBORU, "r");
+    FILE *zapisovanySoubor = fopen(NAZEV_VYSTUPNIHO_SOUBORU, "w");
+
+    zkontrolovatOtevreniSouboru(ctenySoubor, NAZEV_VSTUPNIHO_SOUBORU);
+    zkontrolovatOtevreniSouboru(zapisovanySoubor, NAZEV_VYSTUPNIHO_SOUBORU);
+
+    ZaznamParkovani zaznam;
+    int poradiKonzole = 0;
+    int poradiSoubor = 0;
+    int sekundyZdarma = HODINY_ZDARMA * 3600;
+
+    vytisknoutHlavickuKonzole(stdout);
+    vytisknoutHlavickuSouboru(zapisovanySoubor);
+
+    while (fscanf(ctenySoubor, "%d %d %d %d %d %d",
+                  &zaznam.vjezd.hodiny, &zaznam.vjezd.minuty, &zaznam.vjezd.sekundy,
+                  &zaznam.vyjezd.hodiny, &zaznam.vyjezd.minuty, &zaznam.vyjezd.sekundy) == 6) {
+        poradiKonzole++;
+
+        int sekundyVjezdu = ziskatSekundyZCasu(zaznam.vjezd);
+        int sekundyVyjezdu = ziskatSekundyZCasu(zaznam.vyjezd);
+        int sekundyTrvani = sekundyVyjezdu - sekundyVjezdu;
+
+        HMS casTrvani = ziskatCasZSekund(sekundyTrvani);
+
+        fprintf(stdout, "%3d.    %02d:%02d:%02d  %02d:%02d:%02d  %7d  %02d:%02d:%02d\n",
+                poradiKonzole,
+                zaznam.vjezd.hodiny, zaznam.vjezd.minuty, zaznam.vjezd.sekundy,
+                zaznam.vyjezd.hodiny, zaznam.vyjezd.minuty, zaznam.vyjezd.sekundy,
+                sekundyTrvani,
+                casTrvani.hodiny, casTrvani.minuty, casTrvani.sekundy);
+
+        if (sekundyTrvani > sekundyZdarma) {
+            poradiSoubor++;
+            int sekundyNavic = sekundyTrvani - sekundyZdarma;
+            HMS casNavic = ziskatCasZSekund(sekundyNavic);
+            int poplatek = vypocitatPoplatek(sekundyNavic);
+
+            fprintf(zapisovanySoubor, "%3d.      %02d:%02d:%02d     %02d:%02d:%02d        %02d:%02d:%02d       %02d:%02d:%02d    %3d Kc\n",
+                    poradiSoubor,
+                    zaznam.vjezd.hodiny, zaznam.vjezd.minuty, zaznam.vjezd.sekundy,
+                    zaznam.vyjezd.hodiny, zaznam.vyjezd.minuty, zaznam.vyjezd.sekundy,
+                    casTrvani.hodiny, casTrvani.minuty, casTrvani.sekundy,
+                    casNavic.hodiny, casNavic.minuty, casNavic.sekundy,
+                    poplatek);
+        }
+    }
+
+    fprintf(stdout, "--------------------------------------------------------\n\n");
+    fprintf(stdout, "Byl vytvoren soubor %s.\n\n\n", NAZEV_VYSTUPNIHO_SOUBORU);
+
+    zkontrolovatZavreniSouboruAZavrit(ctenySoubor, NAZEV_VSTUPNIHO_SOUBORU);
+    zkontrolovatZavreniSouboruAZavrit(zapisovanySoubor, NAZEV_VYSTUPNIHO_SOUBORU);
+
+    return 0;
+}

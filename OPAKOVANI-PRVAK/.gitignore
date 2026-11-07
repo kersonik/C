@@ -1,0 +1,16 @@
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Build directories
+[Bb]uild/
+[Dd]ebug/
+.vscode/
+[Rr]elease/

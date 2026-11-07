@@ -1,0 +1,18 @@
+# Compiled binaries and object files
+*.o
+*.obj
+*.out
+*.exe
+*.a
+*.so
+*.dylib
+a.out
+
+# Debugging and build files
+*.dSYM/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
