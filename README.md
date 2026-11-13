@@ -1,33 +1,67 @@
-# C Programming - School Projects & Exercises
+# 💻 C Programming — Školní projekty a cvičení
 
-Kolekce programů, cvičení a úloh v jazyce C vytvořených v rámci výuky programování na střední škole.
+> Kolekce algoritmů, cvičení a ročníkových prověrek v jazyce C vytvořených v rámci výuky programování na SŠPU Opava.
 
-## Obsah repozitáře
+[![Language](https://img.shields.io/badge/Language-C99%20%2F%20C11-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Compiler](https://img.shields.io/badge/Compiler-GCC%20%7C%20Clang-informational?style=for-the-badge&logo=gnu&logoColor=white)](https://gcc.gnu.org/)
+[![School](https://img.shields.io/badge/Škola-SŠPU%20Opava-red?style=for-the-badge)](https://www.sspu-opava.cz/)
+[![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](LICENSE)
 
-### Základní cvičení a algoritmy
-- **BMI** / **vypocet-bmi**: Výpočet body mass indexu a vyhodnocení kategorií.
-- **buffer**: Práce se vstupním bufferem a bezpečné načítání uživatelského vstupu.
-- **draha-rychlost1**, **draha-rychlost2**: Fyzikální výpočty dráhy, času a rychlosti.
-- **mc-stack**: Výpočet stacků herních předmětů (po 64 / 16 kusech).
-- **moc-a-prvo**, **mocniny**, **prvocisla**: Algoritmy pro testování prvočíselnosti a mocnění.
-- **nsn-nsd**: Výpočet nejmenšího společného násobku a největšího společného dělitele (Eukleidův algoritmus).
-- **parkoviste**: Simulace a výpočet parkovného dle délky stání.
-- **prestupny-rok**: Algoritmus pro ověření přestupného roku podle gregoriánského kalendáře.
-- **prevod-cas**: Převod sekund na hodiny, minuty a sekundy.
-- **vypis-ucet**: Formátovaný bankovní výpis z účtu.
-- **vyska-valce**: Výpočet objemu a hladiny kapalin ve válcích.
+---
 
-### Komplexní procvičování
-- **OPAKOVANI-PRVAK**: Souhrnná zadání, vzorová řešení a výsledky praktických prověrek (práce s poli, cykly, podmínkami a formátovaným výstupem).
+## 📌 Struktura repozitáře
 
-## Kompilace a spuštění
+Repozitář je rozdělen na dvě hlavní části: **samostatná cvičení** z průběžné výuky a komplexní modul **OPAKOVANI-PRVAK**, který zachycuje ročníkový praktický test.
 
-Všechny programy lze přeložit pomocí standardního GCC kompilátoru:
+---
+
+### 1. Průběžná cvičení a algoritmy (kořenové složky)
+
+Jednotlivé složky obsahují ucelené programy zaměřené na práci se soubory, strukturami, cykly, podmínkami a matematickými algoritmy:
+
+| Složka | Zaměření programu | Klíčové koncepty |
+| :--- | :--- | :--- |
+| **`BMI`** | Dávkový výpočet indexu tělesné hmotnosti | Načítání ze souboru `vysky_vahy.txt`, zápis do `obezita.txt` |
+| **`vypocet-bmi`** | Interaktivní konzolový kalkulátor BMI | Vstup přes `scanf`, větvení podmínek, kategorie WHO |
+| **`buffer`** | Čištění a správa vstupního bufferu | Bezpečné načítání znaků, prevence zacyklení vstupu |
+| **`draha-rychlost1` / `2`** | Fyzikální kinematické výpočty | Převody jednotek, výpočet dráhy, času a průměrné rychlosti |
+| **`mc-stack`** | Minecraft Stack Calculator | Celočíselné dělení a modulo pro přepočet bloků na stacky (64x) |
+| **`moc-a-prvo`** | Kombinovaný algoritmus mocnin a prvočísel | Dělitelnost, optimalizované hledání prvočísel |
+| **`mocniny`** | Výpočet celočíselných i reálných mocnin | Matematické cykly, práce s akumulátorem |
+| **`nsn-nsd`** | Nejméně společný násobek & Největší společný dělitel | Eukleidův algoritmus |
+| **`parkoviste`** | Automatizovaný parkovací systém | Struktury `ParkovaciData`, výpočet doby stání a ceníku |
+| **`prestupny-rok`** | Gregoriánský kalendář | Logické operátory (`rok % 4 == 0 && (rok % 100 != 0 \|\| rok % 400 == 0)`) |
+| **`prevod-cas`** | Formátování časových intervalů | Přepočet celkových sekund na formát `HH:MM:SS` |
+| **`prvocisla`** | Síto a test prvočíselnosti | Testování dělitelnosti do odmocniny z čísla |
+| **`vypis-ucet`** | Formátovaný bankovní výpis | Tabulkový formátovaný výstup, práce s měnou |
+| **`vyska-valce`** | Geometrické výpočty kapalin ve válcích | Výpočet objemu, hladiny a přetečení válcových nádob |
+
+---
+
+### 2. `OPAKOVANI-PRVAK/` (Ročníkový test & AI kontext)
+
+Adresář [`OPAKOVANI-PRVAK/`](OPAKOVANI-PRVAK/) obsahuje kompletní podklady k praktickému souhrnnému testu z 1. ročníku. Slouží jak pro archivaci zadání a studentských řešení, tak jako referenční datová báze:
+
+* **`ZADANI/`**: Oficiální textová zadání testových úloh, specifikace formátu výstupů a testovací vstupní soubory.
+* **`VZOR/`**: Vzorová řešení od vyučujícího demonstrující kanonický styl, ošetření chyb a předepsané formátování.
+* **`VYSLEDEK/`**: Výsledná odevzdaná řešení a výstupy stažené po testu. Tyto soubory zároveň sloužily jako přesný kontext a trénovací podklad pro AI asistenty, aby modely přesně znaly požadovanou konvenci kódu, struktury funkcí a formátování výstupů pro SŠPU Opava.
+
+---
+
+## 🛠️ Kompilace a spuštění
+
+Všechny programy jsou psány v čistém ANSI C a lze je snadno zkompilovat pomocí GCC nebo Clang s přepínači pro kontrolu chyb:
 
 ```bash
-# Příklad kompilace
-gcc -Wall -Wextra -std=c11 cesta/k/souboru.c -o program
+# Příklad kompilace libovolného programu:
+gcc -Wall -Wextra -std=c99 parkoviste/parkoviste.c -o parkoviste
 
-# Spuštění
-./program
+# Spuštění zkompilovaného programu:
+./parkoviste
 ```
+
+---
+
+## 📄 Licence
+
+Vytvořeno pro studijní a výukové účely na SŠPU Opava.
