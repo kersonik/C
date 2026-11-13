@@ -35,7 +35,7 @@ static void vytisknoutHlavickuSouboru(FILE *soubor) {
     fprintf(soubor, "Parkoviste - P L A T B Y\n");
     fprintf(soubor, "--------------------------------------------\n");
     fprintf(soubor, "pocet parkovani zdarma             : %d h\n", LIMIT_ZDARMA_HOD);
-    fprintf(soubor, "hodinova sazba po prekroceni limitu  : %d Kc\n", CENA_ZA_ODINU);
+    fprintf(soubor, "hodinova sazba po prekroceni limitu  : %d Kc\n", CENA_ZA_HODINU);
     fprintf(soubor, "-----------------------------------------------------------------------\n");
     fprintf(soubor, "poradi  cas vjezdu  cas vyjezdu  doba parkovani      nad limit    platba\n");
     fprintf(soubor, "-----------------------------------------------------------------------\n");
